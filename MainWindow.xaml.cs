@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -187,6 +187,7 @@ namespace GeigerScope
         private readonly MmWaveReader _mmReader = new(MAX_SAMPLES);
         private bool _mmOnline  = false;
         private int  _mmWindow  = 100; // 60GHz samples to show (10Hz = 10s)
+        private System.Diagnostics.Process? _radar3DProcess;
 
         // ── RF power estimation
         private const double RF_K_LOW  = 0.01;
@@ -491,6 +492,32 @@ namespace GeigerScope
                     .ToUnixTimeMilliseconds() * 1_000_000L;
             };
             _mmReader.Start();
+try
+            {
+                _radar3DProcess = new System.Diagnostics.Process
+                {
+                    StartInfo = new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName        = "python",
+                        Arguments       = @"J:\True-Sentinel\mmwave\spatial3d.py",
+                        CreateNoWindow  = true,
+                        UseShellExecute = false,
+                    }
+                };
+                _radar3DProcess.Start();
+                Task.Delay(1500).ContinueWith(_ =>
+                    Dispatcher.Invoke(() =>
+                    {
+                        Radar3DView.Navigate(new Uri("http://127.0.0.1:8080"));
+                        Txt3DStatus.Text       = "3D RADAR — LIVE";
+                        Txt3DStatus.Foreground =
+                            new SolidColorBrush(Color.FromRgb(0x00, 0xFF, 0xFF));
+                    }));
+            }
+            catch (Exception ex)
+            {
+                AddEvent($"[3D] Failed to start: {ex.Message}", "#FF4444");
+            }
         }
 
         // ── Connect ───────────────────────────────────────────────────────
@@ -4177,6 +4204,7 @@ if (graded.Count > 0
         {
             _cts.Cancel();
             _mmReader.Stop();
+            try { _radar3DProcess?.Kill(); } catch { }
         }
 
         // ── Tethered badge helpers ────────────────────────────────────────────────
