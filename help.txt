@@ -1,8 +1,27 @@
+Connect 60GHz HLK-LD6002 FMCW Radar Module 
+Connect FS-5000 Nuclear Radiation Detector Radiation
+Connect HamGeek SDR Radio Zynq7010+AD9363 SDR Software Defined Radio
+
+
 python sentinel_sweep.py --uri ip:192.168.2.3 --no-gui --out J:\True-Sentinel\6.EMF-Bombardment
 python fs5000_serial.py
  python 10.py
 python geiger_live_server.py
+mkdir GeigerScope
+#place these files in GeigerScope then build:
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         7/24/2026   8:33 PM            490 App.xaml
+-a----         7/24/2026   8:33 PM            218 App.xaml.cs
+-a----         7/24/2026   8:33 PM            643 AssemblyInfo.cs
+-a----         7/24/2026   8:33 PM            466 GeigerScope.csproj
+-a----          8/7/2026   4:13 PM          21462 MainWindow.xaml
+-a----          8/7/2026   9:12 PM         251416 MainWindow.xaml.cs
+-a----         7/24/2026   8:33 PM           4051 VideoRecorder.cs
+-a----         7/24/2026   8:33 PM           8721 WaveformAnalyzer.cs
+
 cd GeigerScope
 dotnet build 
 dotnet run
-connect
+#click connect
+
