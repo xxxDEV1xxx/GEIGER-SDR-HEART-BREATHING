@@ -1,6 +1,7 @@
-﻿<Window x:Class="GeigerScope.MainWindow"
+<Window x:Class="GeigerScope.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         Title="CTW GEIGER SCOPE" Height="820" Width="1340"
         Background="#0A0A0A" Closing="Window_Closing">
     <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -389,6 +390,20 @@
                             </ScrollViewer>
                         </DockPanel>
                     </Border>
+      <!-- ── 3D Spatial Panel ─────────────────────────────────────────── -->
+        <Border Background="#050510" BorderBrush="#003333"
+                BorderThickness="0,1,0,0" Height="300"
+                VerticalAlignment="Bottom">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top"
+                           x:Name="Txt3DStatus"
+                           Text="3D RADAR — starting..."
+                           Foreground="#004444"
+                           FontFamily="Consolas" FontSize="10"
+                           Margin="8,4,0,2"/>
+                <wv2:WebView2 x:Name="Radar3DView"/>
+            </DockPanel>
+        </Border>
                 </Grid>
             </DockPanel>
         </Border>
