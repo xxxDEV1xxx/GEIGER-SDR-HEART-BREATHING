@@ -505,10 +505,11 @@ try
                     }
                 };
                 _radar3DProcess.Start();
-                Task.Delay(1500).ContinueWith(_ =>
-                    Dispatcher.Invoke(() =>
+                Task.Delay(3000).ContinueWith(async _ =>
+                    await Dispatcher.InvokeAsync(async () =>
                     {
-                        Radar3DView.Navigate(new Uri("http://127.0.0.1:8080"));
+                        await Radar3DView.EnsureCoreWebView2Async();
+                        Radar3DView.Source = new Uri("http://127.0.0.1:8080");
                         Txt3DStatus.Text       = "3D RADAR — LIVE";
                         Txt3DStatus.Foreground =
                             new SolidColorBrush(Color.FromRgb(0x00, 0xFF, 0xFF));
