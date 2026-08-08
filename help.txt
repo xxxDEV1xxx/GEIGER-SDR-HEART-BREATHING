@@ -1,0 +1,8 @@
+python sentinel_sweep.py --uri ip:192.168.2.3 --no-gui --out J:\True-Sentinel\6.EMF-Bombardment
+python fs5000_serial.py
+ python 10.py
+python geiger_live_server.py
+cd GeigerScope
+dotnet build 
+dotnet run
+connect
