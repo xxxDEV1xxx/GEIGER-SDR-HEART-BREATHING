@@ -1,0 +1,397 @@
+﻿<Window x:Class="GeigerScope.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CTW GEIGER SCOPE" Height="820" Width="1340"
+        Background="#0A0A0A" Closing="Window_Closing">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+    <Grid MinHeight="820">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="600"/>
+            <RowDefinition Height="180"/>
+            <RowDefinition Height="320"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ── Header ───────────────────────────────────────────────── -->
+        <Border Grid.Row="0" Grid.ColumnSpan="3"
+                Background="#111" BorderBrush="#00FF88"
+                BorderThickness="0,0,0,1" Padding="10,6">
+            <DockPanel>
+                <TextBlock Text="CTW GEIGER SCOPE"
+                           FontSize="16" FontWeight="Bold"
+                           Foreground="#00FF88" FontFamily="Consolas"
+                           VerticalAlignment="Center"/>
+
+                <!-- Right controls -->
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal" Margin="0,0,4,0">
+
+                    <!-- Record -->
+                    <TextBlock x:Name="TxtRecTime" Text=""
+                               Foreground="#FF4444" FontFamily="Consolas"
+                               FontSize="11" VerticalAlignment="Center"
+                               Margin="0,0,8,0"/>
+                    <Button x:Name="BtnRecord" Content="⏺ RECORD"
+                            Width="100" Height="26"
+                            Background="#220000" Foreground="#FF4444"
+                            BorderBrush="#FF4444"
+                            FontFamily="Consolas" FontWeight="Bold"
+                            FontSize="11"
+                            Click="BtnRecord_Click" Margin="0,0,8,0"/>
+                    <Button x:Name="BtnCalibrate" Content=" CALIBRATE" Click="BtnCalibrate_Click" Width="140" Height="35" Margin="5"/>
+
+
+                    <!-- Connect -->
+                    <TextBox x:Name="TxtServer" Width="190"
+                             Text="ws://localhost:8765"
+                             Background="#1A1A1A" Foreground="#AAAAAA"
+                             BorderBrush="#333" Margin="0,0,6,0"
+                             FontFamily="Consolas" Height="26"
+                             VerticalContentAlignment="Center"/>
+                    <Button x:Name="BtnConnect" Content="CONNECT"
+                            Width="90" Height="26"
+                            Background="#003322" Foreground="#00FF88"
+                            BorderBrush="#00FF88"
+                            FontFamily="Consolas" FontWeight="Bold"
+                            Click="BtnConnect_Click"/>
+                </StackPanel>
+
+                <TextBlock x:Name="TxtStatus" Text="DISCONNECTED"
+                           Foreground="#FF4444" FontFamily="Consolas"
+                           VerticalAlignment="Center" Margin="20,0,0,0"/>
+            </DockPanel>
+        </Border>
+
+        <!-- ── Left panel ────────────────────────────────────────────── -->
+        <Border Grid.Row="1" Grid.Column="0"
+                Background="#0D0D0D" BorderBrush="#222"
+                BorderThickness="0,0,1,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="12,8,12,8">
+
+                    <TextBlock Text="LIVE READINGS" Foreground="#444"
+                               FontSize="10" FontFamily="Consolas"
+                               Margin="0,0,0,6"/>
+
+                    <TextBlock Text="µSv/h" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtDR" Text="-.----"
+                               FontSize="34" FontWeight="Bold"
+                               Foreground="#00FF88" FontFamily="Consolas"
+                               Margin="0,0,0,4"/>
+
+                    <TextBlock Text="CPS" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtCPS" Text="---"
+                               FontSize="22" Foreground="#FFAA00"
+                               FontFamily="Consolas" Margin="0,0,0,4"/>
+
+                    <TextBlock Text="CPM (current minute)"
+                               Foreground="#555" FontSize="10"
+                               FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtCPM" Text="00000"
+                               FontSize="22" Foreground="#FFAA00"
+                               FontFamily="Consolas" Margin="0,0,0,2"/>
+                    <TextBlock x:Name="TxtCpmSec"
+                               Text="0s / 60s elapsed"
+                               FontSize="10" Foreground="#666"
+                               FontFamily="Consolas" Margin="0,0,0,8"/>
+
+                    <TextBlock Text="PEAK (window)" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtPeak" Text="-.----"
+                               FontSize="16" FontWeight="Bold"
+                               Foreground="#FFFF00" FontFamily="Consolas"
+                               Margin="0,0,0,4"/>
+
+                    <TextBlock Text="FLOOR (window)" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtFloor" Text="-.----"
+                               FontSize="16" FontWeight="Bold"
+                               Foreground="#00FFFF" FontFamily="Consolas"
+                               Margin="0,0,0,4"/>
+
+                    <TextBlock Text="DEVICE DOSE (µSv total)" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtDose" Text="-.----"
+                               FontSize="14" Foreground="#8888FF"
+                               FontFamily="Consolas" Margin="0,0,0,2"/>
+                    <TextBlock Text="SESSION DOSE (µSv)" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtSessionDose" Text="-.----"
+                               FontSize="14" Foreground="#AAAAFF"
+                               FontFamily="Consolas" Margin="0,0,0,8"/>
+
+                    <Separator Background="#222" Margin="0,4,0,8"/>
+
+                    <TextBlock Text="CPS DISTRIBUTION" Foreground="#444"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtUniTotal" Text="total: 0s"
+                               FontSize="10" Foreground="#666"
+                               FontFamily="Consolas" Margin="0,1,0,2"/>
+                    <ItemsControl x:Name="CpsDistList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"
+                                           FontFamily="Consolas"
+                                           FontSize="10"
+                                           Foreground="#FFAA00"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="STATE" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtState" Text="---"
+                               FontSize="13" FontWeight="Bold"
+                               Foreground="#FFFFFF" FontFamily="Consolas"
+                               Margin="0,2,0,8"/>
+
+                    <Separator Background="#222" Margin="0,4,0,8"/>
+
+                    <TextBlock Text="LOCATION" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtLocation" Text="---"
+                               FontSize="11" Foreground="#AAAAAA"
+                               FontFamily="Consolas"
+                               TextWrapping="Wrap" Margin="0,2,0,6"/>
+
+                    <TextBlock Text="NOTES" Foreground="#555"
+                               FontSize="10" FontFamily="Consolas"/>
+                    <TextBlock x:Name="TxtNotes" Text="---"
+                               FontSize="11" Foreground="#AAAAAA"
+                               FontFamily="Consolas"
+                               TextWrapping="Wrap" Margin="0,2,0,8"/>
+
+                    <Separator Background="#222" Margin="0,4,0,8"/>
+
+                    <TextBlock Text="CPM HISTORY"
+                               Foreground="#444" FontSize="10"
+                               FontFamily="Consolas" Margin="0,0,0,4"/>
+                    <Border BorderBrush="#222" BorderThickness="1"
+                            Height="160">
+                        <ListView x:Name="CpmList"
+                                  Background="#080808"
+                                  BorderThickness="0"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Display}"
+                                               FontFamily="Consolas"
+                                               FontSize="10"
+                                               Foreground="#00BBFF"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Padding"
+                                            Value="4,1"/>
+                                    <Setter Property="Background"
+                                            Value="Transparent"/>
+                                    <Setter Property="BorderThickness"
+                                            Value="0"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </Border>
+
+                    <Separator Background="#222" Margin="0,8,0,8"/>
+
+                    <!-- Threshold legend -->
+                    <TextBlock Text="THRESHOLDS" Foreground="#444"
+                               FontSize="10" FontFamily="Consolas"
+                               Margin="0,0,0,6"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <Rectangle Width="10" Height="10"
+                                   Fill="#1A3300" Margin="0,0,6,0"/>
+                        <TextBlock Text="&lt;0.10 FLAT"
+                                   FontSize="10" FontFamily="Consolas"
+                                   Foreground="#556"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <Rectangle Width="10" Height="10"
+                                   Fill="#333300" Margin="0,0,6,0"/>
+                        <TextBlock Text="0.10–0.20 LOW"
+                                   FontSize="10" FontFamily="Consolas"
+                                   Foreground="#AA9"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <Rectangle Width="10" Height="10"
+                                   Fill="#331A00" Margin="0,0,6,0"/>
+                        <TextBlock Text="0.20–0.27 ELEVATED"
+                                   FontSize="10" FontFamily="Consolas"
+                                   Foreground="#FA8"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <Rectangle Width="10" Height="10"
+                                   Fill="#330000" Margin="0,0,6,0"/>
+                        <TextBlock Text="≥0.27 SPIKE"
+                                   FontSize="10" FontFamily="Consolas"
+                                   Foreground="#F44"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+
+        <!-- Peak log panel -->
+        <Border Grid.Row="1" Grid.Column="1"
+                Background="#0A0A0A" BorderBrush="#222"
+                BorderThickness="0,0,1,0">
+            <DockPanel>
+                <Border DockPanel.Dock="Top"
+                        Background="#110000" BorderBrush="#FF2222"
+                        BorderThickness="0,0,0,1" Padding="8,6">
+                    <StackPanel>
+                        <TextBlock Text="REALTIME" Foreground="#663333"
+                                   FontSize="9" FontFamily="Consolas"
+                                   FontWeight="Bold"/>
+                        <TextBlock x:Name="TxtPeakRealtime" Text="-.----"
+                                   FontSize="32" FontWeight="Bold"
+                                   Foreground="#FF2222" FontFamily="Consolas"
+                                   Margin="0,2,0,0"/>
+                        <TextBlock Text="µSv/h" Foreground="#882222"
+                                   FontSize="9" FontFamily="Consolas"/>
+                    </StackPanel>
+                </Border>
+                <TextBlock DockPanel.Dock="Top"
+                           Text="PEAK LOG" Foreground="#444"
+                           FontSize="10" FontFamily="Consolas"
+                           Margin="8,6,0,3"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Background="#080808">
+                    <StackPanel x:Name="PeakPanel" Background="#080808"/>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+        <!-- ── Oscilloscope canvas ───────────────────────────────────── -->
+        <Border Grid.Row="1" Grid.Column="2" Background="#080808">
+            <Canvas x:Name="OsciCanvas" ClipToBounds="True"
+                    SizeChanged="OsciCanvas_SizeChanged"/>
+        </Border>
+
+        <!-- ── Split event log ──────────────────────────────────────── -->
+        <Border Grid.Row="2" Grid.ColumnSpan="3"
+                Background="#0D0D0D" BorderBrush="#222"
+                BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: raw readings -->
+                <DockPanel Grid.Column="0">
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="RAW DATA" Foreground="#444"
+                               FontSize="10" FontFamily="Consolas"
+                               Margin="10,5,0,3"/>
+                    <ScrollViewer x:Name="RawScroller"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <ItemsControl x:Name="RawList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"
+                                               FontFamily="Consolas"
+                                               FontSize="10"
+                                               Foreground="#558866"
+                                               Margin="10,0"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+
+                <!-- Divider -->
+                <Rectangle Grid.Column="1"
+                           Fill="#222" Width="1"/>
+
+                <!-- Right: interpreted events -->
+                <DockPanel Grid.Column="2">
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="INTERPRETED EVENTS"
+                               Foreground="#444"
+                               FontSize="10" FontFamily="Consolas"
+                               Margin="10,5,0,3"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <ItemsControl x:Name="EventList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock
+                                        Text="{Binding Text}"
+                                        FontFamily="Consolas"
+                                        FontSize="11"
+                                        Margin="10,1">
+                                        <TextBlock.Foreground>
+                                            <SolidColorBrush
+                                                Color="{Binding WpfColor}"/>
+                                        </TextBlock.Foreground>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Grid>
+        </Border>
+    <!-- ── SDR Panel ─────────────────────────────────────────────── -->
+        <Border Grid.Row="3" Grid.ColumnSpan="3"
+                Background="#0A0A10" BorderBrush="#FF44FF"
+                BorderThickness="0,1,0,0" Margin="0,4,0,0">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top"
+                           Text="SDR SPECTRUM  —  sentinel_sweep / PlutoSDR"
+                           Foreground="#FF44FF" FontFamily="Consolas"
+                           FontSize="10" FontWeight="Bold"
+                           Margin="10,5,0,3"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="260"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- Spectrum canvas -->
+                    <Canvas x:Name="SdrCanvas"
+                            Grid.Column="0"
+                            Background="#06060E"
+                            Height="270"
+                            ClipToBounds="True"/>
+                    <!-- Frequency table -->
+                    <Border Grid.Column="1"
+                            BorderBrush="#222" BorderThickness="1,0,0,0">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top"
+                                       Text="TOP SIGNALS"
+                                       Foreground="#444"
+                                       FontFamily="Consolas" FontSize="10"
+                                       Margin="8,4,0,2"/>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl x:Name="SdrFreqList">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Text="{Binding Display}"
+                                                FontFamily="Consolas"
+                                                FontSize="10"
+                                                Foreground="#CC88FF"
+                                                Margin="8,1"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </DockPanel>
+        </Border>
+    </Grid>
+    </ScrollViewer>
+</Window>
