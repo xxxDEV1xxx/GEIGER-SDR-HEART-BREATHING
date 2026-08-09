@@ -1,5 +1,5 @@
 Connect 60GHz HLK-LD6002 FMCW Radar Module Heart Breathing
-Connect 60GHz HLK-LD6002 FMCW Radar Module 3d spatial awareness
+Connect 60GHz HLK-LD6002B FMCW Radar Module 3d spatial awareness
 Connect FS-5000 Nuclear Radiation Detector Radiation
 Connect HamGeek SDR Radio Zynq7010+AD9363 SDR Software Defined Radio
 
