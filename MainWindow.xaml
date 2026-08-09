@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
-        Title="CTW GEIGER SCOPE" Height="820" Width="1340"
+        Title="CTW GEIGER SCOPE" WindowState="Maximized" Height="820" Width="1340"
         Background="#0A0A0A" Closing="Window_Closing">
     <ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Disabled">
@@ -12,6 +12,7 @@
             <RowDefinition Height="600"/>
             <RowDefinition Height="180"/>
             <RowDefinition Height="320"/>
+            <RowDefinition Height="320"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
@@ -19,7 +20,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- ── Header ───────────────────────────────────────────────── -->
+        <!-- Header -->
         <Border Grid.Row="0" Grid.ColumnSpan="3"
                 Background="#111" BorderBrush="#00FF88"
                 BorderThickness="0,0,0,1" Padding="10,6">
@@ -38,7 +39,7 @@
                                Foreground="#FF4444" FontFamily="Consolas"
                                FontSize="11" VerticalAlignment="Center"
                                Margin="0,0,8,0"/>
-                    <Button x:Name="BtnRecord" Content="⏺ RECORD"
+                    <Button x:Name="BtnRecord" Content="? RECORD"
                             Width="100" Height="26"
                             Background="#220000" Foreground="#FF4444"
                             BorderBrush="#FF4444"
@@ -69,7 +70,7 @@
             </DockPanel>
         </Border>
 
-        <!-- ── Left panel ────────────────────────────────────────────── -->
+        <!-- Left panel -->
         <Border Grid.Row="1" Grid.Column="0"
                 Background="#0D0D0D" BorderBrush="#222"
                 BorderThickness="0,0,1,0">
@@ -80,7 +81,7 @@
                                FontSize="10" FontFamily="Consolas"
                                Margin="0,0,0,6"/>
 
-                    <TextBlock Text="µSv/h" Foreground="#555"
+                    <TextBlock Text="�Sv/h" Foreground="#555"
                                FontSize="10" FontFamily="Consolas"/>
                     <TextBlock x:Name="TxtDR" Text="-.----"
                                FontSize="34" FontWeight="Bold"
@@ -118,12 +119,12 @@
                                Foreground="#00FFFF" FontFamily="Consolas"
                                Margin="0,0,0,4"/>
 
-                    <TextBlock Text="DEVICE DOSE (µSv total)" Foreground="#555"
+                    <TextBlock Text="DEVICE DOSE (�Sv total)" Foreground="#555"
                                FontSize="10" FontFamily="Consolas"/>
                     <TextBlock x:Name="TxtDose" Text="-.----"
                                FontSize="14" Foreground="#8888FF"
                                FontFamily="Consolas" Margin="0,0,0,2"/>
-                    <TextBlock Text="SESSION DOSE (µSv)" Foreground="#555"
+                    <TextBlock Text="SESSION DOSE (�Sv)" Foreground="#555"
                                FontSize="10" FontFamily="Consolas"/>
                     <TextBlock x:Name="TxtSessionDose" Text="-.----"
                                FontSize="14" Foreground="#AAAAFF"
@@ -217,21 +218,21 @@
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <Rectangle Width="10" Height="10"
                                    Fill="#333300" Margin="0,0,6,0"/>
-                        <TextBlock Text="0.10–0.20 LOW"
+                        <TextBlock Text="0.10�0.20 LOW"
                                    FontSize="10" FontFamily="Consolas"
                                    Foreground="#AA9"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <Rectangle Width="10" Height="10"
                                    Fill="#331A00" Margin="0,0,6,0"/>
-                        <TextBlock Text="0.20–0.27 ELEVATED"
+                        <TextBlock Text="0.20�0.27 ELEVATED"
                                    FontSize="10" FontFamily="Consolas"
                                    Foreground="#FA8"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
                         <Rectangle Width="10" Height="10"
                                    Fill="#330000" Margin="0,0,6,0"/>
-                        <TextBlock Text="≥0.27 SPIKE"
+                        <TextBlock Text="=0.27 SPIKE"
                                    FontSize="10" FontFamily="Consolas"
                                    Foreground="#F44"/>
                     </StackPanel>
@@ -256,7 +257,7 @@
                                    FontSize="32" FontWeight="Bold"
                                    Foreground="#FF2222" FontFamily="Consolas"
                                    Margin="0,2,0,0"/>
-                        <TextBlock Text="µSv/h" Foreground="#882222"
+                        <TextBlock Text="�Sv/h" Foreground="#882222"
                                    FontSize="9" FontFamily="Consolas"/>
                     </StackPanel>
                 </Border>
@@ -271,13 +272,13 @@
                 </ScrollViewer>
             </DockPanel>
         </Border>
-        <!-- ── Oscilloscope canvas ───────────────────────────────────── -->
+        <!-- Oscilloscope canvas -->
         <Border Grid.Row="1" Grid.Column="2" Background="#080808">
             <Canvas x:Name="OsciCanvas" ClipToBounds="True"
                     SizeChanged="OsciCanvas_SizeChanged"/>
         </Border>
 
-        <!-- ── Split event log ──────────────────────────────────────── -->
+        <!-- Split event log -->
         <Border Grid.Row="2" Grid.ColumnSpan="3"
                 Background="#0D0D0D" BorderBrush="#222"
                 BorderThickness="0,1,0,0">
@@ -344,13 +345,14 @@
                 </DockPanel>
             </Grid>
         </Border>
-    <!-- ── SDR Panel ─────────────────────────────────────────────── -->
-        <Border Grid.Row="3" Grid.ColumnSpan="3"
+    <!-- SDR Panel -->
+         <Border Grid.Row="3" Grid.ColumnSpan="3"
                 Background="#0A0A10" BorderBrush="#FF44FF"
-                BorderThickness="0,1,0,0" Margin="0,4,0,0">
+                BorderThickness="0,1,0,0" Margin="0,4,0,0"
+                Height="300">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Top"
-                           Text="SDR SPECTRUM  —  sentinel_sweep / PlutoSDR"
+                           Text="SDR SPECTRUM  �  sentinel_sweep / PlutoSDR"
                            Foreground="#FF44FF" FontFamily="Consolas"
                            FontSize="10" FontWeight="Bold"
                            Margin="10,5,0,3"/>
@@ -390,21 +392,21 @@
                             </ScrollViewer>
                         </DockPanel>
                     </Border>
-      <!-- ── 3D Spatial Panel ─────────────────────────────────────────── -->
-        <Border Background="#050510" BorderBrush="#003333"
+                </Grid>
+            </DockPanel>
+        </Border>
+    <!-- 3D Spatial Panel -->
+        <Border Grid.Row="4" Grid.ColumnSpan="3" Background="#050510" BorderBrush="#003333"
                 BorderThickness="0,1,0,0" Height="300"
                 VerticalAlignment="Bottom">
             <DockPanel>
                 <TextBlock DockPanel.Dock="Top"
                            x:Name="Txt3DStatus"
-                           Text="3D RADAR — starting..."
+                           Text="3D RADAR � starting..."
                            Foreground="#004444"
                            FontFamily="Consolas" FontSize="10"
                            Margin="8,4,0,2"/>
                 <wv2:WebView2 x:Name="Radar3DView"/>
-            </DockPanel>
-        </Border>
-                </Grid>
             </DockPanel>
         </Border>
     </Grid>
